@@ -40,3 +40,18 @@ variable "instance_type" {
     default = "t2.micro"
 }
 
+variable "company" {
+    type = string
+    description = "Company name for ressource tagging"
+    default = "Oumzamhar"
+}
+
+variable "project" {
+    type = string
+    description = "Project name for ressource tagging"
+}
+
+variable "billing_code" {
+    type = string
+    description = "Billing code for ressource tagging"
+}

@@ -25,17 +25,22 @@ resource "aws_vpc" "vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = var.enable_dns_hostname
 
+  tag = local.common_tags
+
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
-
+  
+  tag = local.common_tags
 }
 
 resource "aws_subnet" "subnet1" {
   cidr_block              = var.vpc_subnets_cidr_block
   vpc_id                  = aws_vpc.vpc.id
   map_public_ip_on_launch = var.map_public_ip_on_launch
+
+  tag = local.common_tags
 }
 
 # ROUTING #
@@ -46,6 +51,8 @@ resource "aws_route_table" "rtb" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
+
+  tag = local.common_tags
 }
 
 resource "aws_route_table_association" "rta-subnet1" {
@@ -74,6 +81,8 @@ resource "aws_security_group" "nginx-sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tag = local.common_tags
 }
 
 # INSTANCES #
@@ -90,6 +99,8 @@ sudo service nginx start
 sudo rm /usr/share/nginx/html/index.html
 echo '<html><head><title>Dummy Server</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
 EOF
+
+  tag = local.common_tags
 
 }
 
